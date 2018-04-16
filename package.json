@@ -4,6 +4,7 @@
   "description": "Bot for Telegram service for use with Ager robot.",
   "main": "index.js",
   "scripts": {
+    "dev": "node_modules/.bin/nodemon index",
     "start": "node index.js"
   },
   "engines": {
@@ -24,14 +25,17 @@
     "url": "https://github.com/Razborges/ager-bot-telegram-v1/issues"
   },
   "homepage": "https://github.com/Razborges/ager-bot-telegram-v1#readme",
-  "dependencies": {
-    "dotenv": "^5.0.1",
+  "devDependencies": {
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
+    "nodemon": "^1.17.3"
+  },
+  "dependencies": {
+    "dotenv": "^5.0.1",
     "moment": "^2.22.1",
     "node-telegram-bot-api": "^0.30.0"
   }
