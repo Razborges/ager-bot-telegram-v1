@@ -1,93 +1,62 @@
 require('dotenv').config();
+const axios = require('axios');
 
 const URL = process.env.API_URLBASE;
 
-const headers = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
-};
-
 // ROBOT
-const getRobot = async (numberSeries) => {
-  try {
-    const response = await fetch(`${URL}/robot/${numberSeries}`, { headers });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
+const getRobot = (numberSeries) => {
+  axios.get(`${URL}robot/${numberSeries}`)
+    .then(response => response.data)
+    .catch(error => error);
 };
 
 // USER
-const getUser = async (serviceId) => {
-  try {
-    const response = await fetch(`${URL}/user/${serviceId}`, { headers });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
+const getUser = (serviceId) => {
+  axios.get(`${URL}user/${serviceId}`)
+    .then(response => response.data)
+    .catch(error => error);
 };
 
-const addUser = async (numberSeries, user) => {
-  try {
-    const response = await fetch(`${URL}/user/${numberSeries}`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(user),
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
+const addUser = (numberSeries, user) => {
+  axios.post(`${URL}user/${numberSeries}`, {
+    name: user.name,
+    email: user.email,
+    service: user.service,
+    serviceId: user.serviceId,
+  })
+    .then(response => response.data)
+    .catch(error => error);
 };
 
 // ROUTE
-const getRoute = async (numberSeries) => {
-  try {
-    const response = await fetch(`${URL}/route/${numberSeries}`, { headers });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
+const getRoute = (numberSeries) => {
+  axios.get(`${URL}route/${numberSeries}`)
+    .then(response => response.data)
+    .catch(error => error);
 };
 
-const addRoute = async (numberSeries, route) => {
-  try {
-    const response = await fetch(`${URL}/route/${numberSeries}`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify(route),
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
+const addRoute = (numberSeries, route) => {
+  axios.post(`${URL}route/${numberSeries}`, {
+    name: route.name,
+    type: route.type,
+    start: route.start,
+  })
+    .then(response => response.data)
+    .catch(error => error);
 };
 
 // WORK
-const getWork = async (idRoute) => {
-  try {
-    const response = await fetch(`${URL}/work/${idRoute}`, { headers });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
+const getWork = (idRoute) => {
+  axios.get(`${URL}work/${idRoute}`)
+    .then(response => response.data)
+    .catch(error => error);
 };
 
 // BATTERY
-const getBattery = async (numberSeries) => {
-  try {
-    const response = await fetch(`${URL}/battery/${numberSeries}`, { headers });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
+const getBattery = (numberSeries) => {
+  axios.get(`${URL}battery/${numberSeries}`)
+    .then(response => response.data)
+    .catch(error => error);
 };
 
 const API = {
@@ -100,4 +69,4 @@ const API = {
   getBattery,
 };
 
-export default API;
+module.exports = API;
