@@ -9,8 +9,15 @@ let bot = '';
 if (process.env.DEV) {
   bot = new TelegramBot(token, { polling: true });
 } else {
-  bot = new TelegramBot(token, { polling: true, webHook: { port: process.env.PORT } });
-  bot.setWebHook(`${process.env.URL}:${process.env.PORT}/${token}`);
+  bot = new TelegramBot(token, {
+    polling: true,
+    webHook: {
+      port: process.env.PORT,
+      host: process.env.HOST,
+    },
+  });
+
+  bot.setWebHook(`${process.env.URL}:${process.env.PORT}/bot${token}`);
 }
 
 // COMMAND /start

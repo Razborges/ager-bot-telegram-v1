@@ -4,5 +4,6 @@ API_URLBASE=
 
 URL=
 PORT=
+HOST=
 
 DEV=
