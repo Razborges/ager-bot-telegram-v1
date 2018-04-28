@@ -6,19 +6,19 @@ const TelegramBot = require('node-telegram-bot-api');
 const token = process.env.TELEGRAM_TOKEN;
 let bot = '';
 
-if (process.env.DEV) {
-  bot = new TelegramBot(token, { polling: true });
-} else {
-  bot = new TelegramBot(token, {
-    // polling: true,
-    webHook: {
-      port: process.env.PORT,
-      host: process.env.HOST,
-    },
-  });
+// if (process.env.DEV) {
+bot = new TelegramBot(token, { polling: true });
+// } else {
+//   bot = new TelegramBot(token, {
+//     // polling: true,
+//     webHook: {
+//       port: process.env.PORT,
+//       host: process.env.HOST,
+//     },
+//   });
 
-  bot.setWebHook(`${process.env.URL}:${process.env.PORT}/${token}`);
-}
+//   bot.setWebHook(`${process.env.URL}:${process.env.PORT}/${token}`);
+// }
 
 // COMMAND /start
 bot.onText(/\/start/, async (info) => {
