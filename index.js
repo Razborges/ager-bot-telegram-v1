@@ -10,7 +10,7 @@ if (process.env.DEV) {
   bot = new TelegramBot(token, { polling: true });
 } else {
   bot = new TelegramBot(token, {
-    polling: true,
+    // polling: true,
     webHook: {
       port: process.env.PORT,
       host: process.env.HOST,
