@@ -17,7 +17,7 @@ if (process.env.DEV) {
     },
   });
 
-  bot.setWebHook(`${process.env.URL}:${process.env.PORT}/bot${token}`);
+  bot.setWebHook(`${process.env.URL}:${process.env.PORT}/${token}`);
 }
 
 // COMMAND /start
