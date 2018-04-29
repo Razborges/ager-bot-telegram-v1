@@ -8,7 +8,7 @@ const Register = require('./commands/register');
 module.exports = (token, options) => {
   // DEFININDO BOT
   const bot = new TelegramBot(token, options);
-  bot.setWebHook(`${process.env.URL}:${process.env.PORT}/${token}`);
+  bot.setWebHook(`${process.env.URL}:${process.env.PORT}/bot${token}`);
 
   // COMMAND /start
   bot.onText(/\/start/, async (info) => {
