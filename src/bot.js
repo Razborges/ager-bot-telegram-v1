@@ -1,6 +1,6 @@
 require('dotenv').config();
-const TelegramBot = require('node-telegram-bot-api');
 const Api = require('./api');
+const TelegramBot = require('node-telegram-bot-api');
 const User = require('./models/User');
 const Start = require('./commands/start');
 const Register = require('./commands/register');
@@ -11,7 +11,7 @@ module.exports = (token, options) => {
   bot.setWebHook(`${process.env.URL}:${process.env.PORT}/bot${token}`);
 
   // COMMAND /start
-  bot.onText(/\/start/, async (info) => {
+  bot.onText(/\/start (.+)/, async (info) => {
     const chatId = info.chat.id;
     const name = `@${info.from.username}`;
     const user = await Api.getUser(info.from.id);
