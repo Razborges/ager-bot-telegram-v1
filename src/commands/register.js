@@ -1,16 +1,11 @@
 module.exports = {
-  newRoute: {
-    parse_mode: 'markdown',
-    reply_markup: {
-      remove_keyboard: true,
-      one_time_keyboard: true,
-      keyboard: [['Cadastrar rota'], ['/start']],
-    },
+  menu: {
+    newRoute: [['Cadastrar rota'], ['/start']],
   },
 
   message: {
-    info: 'Para registrar um *AGER* você deve nos informar o número de série e seu e-mail separados por hífen. Exemplo: _12345abc - seu@email.com_',
-    digit: 'Está pronto? Digite agora:',
+    digitNumber: 'Para registrar um *AGER* você deve digitar o número de série:',
+    digitEmail: 'Agora você deve digitar o seu e-maill de contato:',
     success: 'Seu *AGER* foi registrado para você!',
     newRoute: 'Agora precisamos cadastrar uma nova rota de trabalho.',
     errorNumberSeries: 'Temos um PROBLEMA! Seu número de série está errado ou houve algum erro de digitação.',

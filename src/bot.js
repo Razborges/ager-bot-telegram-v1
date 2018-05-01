@@ -1,74 +1,85 @@
 require('dotenv').config();
-// const Api = require('./api');
-// const User = require('./models/User');
-// const Start = require('./commands/start');
-// const Register = require('./commands/register');
-// const TelegramBot = require('node-telegram-bot-api');
+const Api = require('./api');
+const User = require('./models/User');
+const Start = require('./commands/start');
+const Register = require('./commands/register');
 const botgram = require('botgram');
 
 module.exports = (token) => { // , options) =>
   const bot = botgram(token);
+  bot.context({ register: false, email: false, numberSeries: false });
+  let numberSeries = '';
+  let email = '';
 
-  bot.command('start', (msg, reply) => {
-    reply.text('Ciao sono il photo bot manda le foto da archiviare..');
+  bot.command('start', async (msg, reply) => {
+    const name = `@${msg.from.username}`;
+    const user = await Api.getUser(msg.from.id);
+
+    if (!user.data.result) {
+      reply.keyboard().markdown(Start.message.welcome(name));
+      reply.text(Start.message.explain, 'Markdown');
+      reply.keyboard(Start.menu.init, true).markdown(Start.message.initOptions);
+    }
+
+    if (user.data.result) {
+      reply.keyboard().markdown(Start.message.return(name));
+      reply.keyboard(Start.menu.complete).markdown(Start.message.commands);
+    }
   });
-  // // DEFININDO BOT
-  // const bot = new TelegramBot(token, options);
-  // bot.setWebHook(`${process.env.URL}:${process.env.PORT}/bot${token}`);
 
-  // // COMMAND /start
-  // bot.onText(/\/start (.+)/, async (info) => {
-  //   const chatId = info.chat.id;
-  //   const name = `@${info.from.username}`;
-  //   const user = await Api.getUser(info.from.id);
+  bot.message(async (msg, reply) => {
+    const text = msg.text.toLowerCase();
 
-  //   if (!user.data.result) {
-  //     await bot.sendMessage(chatId, Start.message.welcome(name), Start.default);
-  //     await bot.sendMessage(chatId, Start.message.explain, Start.default);
-  //     await bot.sendMessage(chatId, Start.message.initOptions, Start.init);
-  //   }
+    const name = `${msg.from.firstname} ${msg.from.lastname}`;
+    const service = 'telegram';
+    const serviceId = msg.from.id;
 
-  //   if (user.data.result) {
-  //     await bot.sendMessage(chatId, Start.message.return(name), Start.default);
-  //     await bot.sendMessage(chatId, Start.message.commands, Start.complete);
-  //   }
-  // });
+    if (text === 'registrar um ager') {
+      reply.keyboard().markdown(Register.message.digitNumber);
+      msg.context.register = true;
+      msg.context.numberSeries = true;
+    }
 
-  // // REGISTER A AGER
-  // bot.onText(/Registrar um AGER/, async (info) => {
-  //   const chatId = info.chat.id;
-  //   const name = `${info.from.first_name} ${info.from.last_name}`;
-  //   const service = 'telegram';
-  //   const serviceId = info.from.id;
+    if (text !== 'registrar um ager' && msg.context.register && msg.context.numberSeries) {
+      numberSeries = text.toString().trim();
+      reply.keyboard().markdown(Register.message.digitEmail);
+      msg.context.numberSeries = false;
+      msg.context.email = true;
+    }
 
-  //   await bot.sendMessage(chatId, Register.message.info, Start.default);
-  //   await bot.sendMessage(chatId, Register.message.digit, Start.default);
+    if (text !== numberSeries && msg.context.register && msg.context.email) {
+      email = text.toString().trim();
 
-  //   bot.on('message', async (numberMsg) => {
-  //   // VERIFICAR NUMERO DE SÉRIE E EMAIL
-  //     let [numberSeries, email] = numberMsg.text.toString().split('-');
+      msg.context.register = false;
+      msg.context.email = false;
 
-  //     numberSeries = numberSeries.trim();
-  //     email = email.trim();
+      if (numberSeries && email) {
+        const user = new User(name, email, service, serviceId);
+        const result = await Api.addUser(numberSeries, user);
 
-  //     if (numberSeries && email) {
-  //       const user = new User(name, email, service, serviceId);
-  //       const result = await Api.addUser(numberSeries, user);
+        if (!result.error) {
+          reply.markdown(Register.message.success);
+          reply.keyboard(Register.menu.newRoute).markdown(Register.message.newRoute);
+        }
 
-  //       if (!result.error) {
-  //         await bot.sendMessage(chatId, Register.message.success, Start.default);
-  //         await bot.sendMessage(chatId, Register.message.newRoute, Register.newRoute);
-  //       }
+        if (result.error) {
+          reply.markdown(Register.message.errorNumberSeries);
+          reply.keyboard(Start.menu.init).markdown(Register.message.errorMenu);
+        }
+      } else {
+        reply.keyboard(Start.menu.init).markdown(Register.message.errorEmail);
+      }
+    }
 
-  //       if (result.error) {
-  //         await bot.sendMessage(chatId, Register.message.errorNumberSeries, Start.default);
-  //         await bot.sendMessage(chatId, Register.message.errorMenu, Start.init);
-  //       }
-  //     } else {
-  //       bot.sendMessage(chatId, Register.message.errorEmail, Start.init);
-  //     }
-  //   });
-  // });
+    if (text === 'saber mais sobre o ager') {
+      reply.keyboard().markdown('CRIAR MENSAGEM');
+      reply.keyboard(Start.menu.init, true).markdown(Start.message.initOptions);
+    }
+
+    if (text === 'xau' || text === 'adeus' || text === 'fui' || text === 'quit') {
+      reply.keyboard().markdown('Foi um prazer ajudar, até mais :)');
+    }
+  });
 
   return bot;
 };
