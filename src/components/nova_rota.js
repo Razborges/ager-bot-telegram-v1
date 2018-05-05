@@ -1,13 +1,19 @@
-// const Api = require('../api');
+const Api = require('../api');
 const Messages = require('./messages');
-// const Menus = require('./menus');
+const { commandStart } = require('./start');
 
-exports.commandNovaRota = (msg, reply) => {
+exports.commandNovaRota = async (msg, reply) => {
   const nameUser = `@${msg.from.username}`;
 
-  reply.keyboard().markdown(Messages.nova_rota.lesson(nameUser));
-  reply.markdown(Messages.nova_rota.example);
-  reply.markdown(Messages.nova_rota.go);
+  const user = await Api.getUser(msg.from.id);
 
-  msg.context.nova_rota = true;
+  if (!user.data.result) {
+    commandStart(msg, reply);
+  } else {
+    reply.keyboard().markdown(Messages.nova_rota.lesson(nameUser));
+    reply.markdown(Messages.nova_rota.example);
+    reply.markdown(Messages.nova_rota.go);
+
+    msg.context.nova_rota = true;
+  }
 };

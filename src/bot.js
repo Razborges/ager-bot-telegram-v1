@@ -6,6 +6,10 @@ const Messages = require('./components/messages');
 const Menus = require('./components/menus');
 const { commandStart } = require('./components/start');
 const { commandNovaRota } = require('./components/nova_rota');
+const { commandMenu } = require('./components/menu_command');
+const { commandBateria } = require('./components/bateria');
+const { commandTemperatura } = require('./components/temperatura');
+const { commandHumidade } = require('./components/humidade');
 
 const botgram = require('botgram');
 
@@ -19,7 +23,11 @@ module.exports = (token) => {
 
   // COMMANDS
   bot.command('start', commandStart);
+  bot.command('menu', commandMenu);
   bot.command('nova_rota', commandNovaRota);
+  bot.command('bateria', commandBateria);
+  bot.command('temperatura', commandTemperatura);
+  bot.command('humidade', commandHumidade);
 
   // VERIFICANDO RETORNO DAS MENSAGENS DO USUÁRIO
   bot.message(async (msg, reply) => {
@@ -29,6 +37,7 @@ module.exports = (token) => {
     const service = 'telegram';
     const serviceId = msg.from.id;
 
+    // REGISTRANDO UM AGER
     if (text === 'registrar um ager') {
       reply.keyboard().markdown(Messages.register.digitNumber);
       msg.context.register = true;
@@ -98,11 +107,51 @@ module.exports = (token) => {
       }
     }
 
+    // INFORMAÇÕES SOBRE O AGER
     if (text === 'saber mais sobre o ager') {
       reply.keyboard().markdown(Messages.default.ager);
       reply.keyboard(Menus.init).markdown(Messages.start.initOptions);
     }
 
+    // LISTAGEM DE ROTAS
+    if (text === 'ver minhas rotas') {
+      const user = await Api.getUser(msg.from.id);
+      const number = user.data.result.robot.numberSeries;
+      const routes = await Api.getRoute(number);
+      const count = routes.data.routes.length;
+
+      if (count === 0) {
+        reply.keyboard(Menus.complete).markdown(Messages.rotas.noRoutes);
+      } else if (count > 1) {
+        reply.keyboard().markdown(Messages.rotas.moreRoutes(count));
+      } else {
+        reply.keyboard().markdown(Messages.rotas.oneRoute(count));
+      }
+
+      routes.data.routes.map(route => (
+        reply.markdown(Messages.rotas.infoRoute(route))
+      ));
+
+      reply.keyboard(Menus.complete);
+    }
+
+    // INFORMAÇÕES SOBRE TEMPERATURA
+    if (text === 'verificar temperaturas') {
+      commandTemperatura(msg, reply);
+    }
+
+    // INFORMAÇÕES SOBRE HUMIDADE
+    if (text === 'verificar humidade') {
+      commandHumidade(msg, reply);
+    }
+
+    // CONSULTAR NÍVEL DA BATERIA
+    if (text === 'nível da bateria') {
+      commandBateria(msg, reply);
+      reply.keyboard(Menus.complete);
+    }
+
+    // DESPEDIDA
     if (text === 'xau' || text === 'adeus' || text === 'fui' || text === 'quit') {
       reply.keyboard().markdown(Messages.default.xau);
     }

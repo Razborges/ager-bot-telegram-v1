@@ -10,7 +10,7 @@ module.exports = {
     digitNumber: 'Para registrar um *AGER* você deve digitar o número de série:',
     digitEmail: 'Agora você deve digitar o seu e-maill de contato:',
     success: 'Seu *AGER* foi registrado!',
-    newRoute: 'Podemos cadastrar uma nova rota se quiser com o comando *nova_rota*, ou você pode ir ao menu principal através do comando *start*.',
+    newRoute: 'Podemos cadastrar uma nova rota se quiser com o comando *nova_rota*, ou você pode ir ao menu principal através do comando *menu*.',
     errorNumberSeries: 'Temos um PROBLEMA! Seu número de série está errado ou houve algum erro de digitação.',
     errorMenu: 'Precisaremos tentar novamente, agora vai dar tudo certo! Escolha novamente:',
     errorEmail: 'Temos um PROBLEMA! As informações que passou não estão na forma corretas, tente novamente.',
@@ -23,8 +23,30 @@ module.exports = {
     error: 'Parece que ocorreu algum erro.',
     again: 'Vamos tentar novamente?',
   },
+  rotas: {
+    noRoutes: 'Seu *AGER* ainda não possui rotas cadastradas.',
+    oneRoute: count => `Seu *AGER* possui ${count} rota cadastrada:`,
+    moreRoutes: count => `Seu *AGER* possui ${count} rotas cadastradas:`,
+    infoRoute: route => `Rota ${route.name} com plantio de ${route.type}`,
+  },
+  menu_command: {
+    menu: name => `${name}, abaixo o menu principal, e a qualquer momento comece digitando / para visualizar a lista com os comandos especiais.`,
+  },
+  bateria: {
+    levelWithName: (level, name) => `O *AGER* _${name}_ está com ${level}% de bateria.`,
+    level: level => `Bateria com ${level}% de carga.`,
+    noLevel: 'Seu *AGER* está *sem bateria*!',
+  },
+  temperatura: {
+    temperature: (route, temperature, date) => `Rota ${route.name}: ${temperature}°C - _${date}_`,
+  },
+  humidade: {
+    humidity: (route, humidity, date) => `Rota ${route.name}: ${humidity}% - _${date}_`,
+  },
   default: {
     ager: 'CRIAR MENSAGEM',
     xau: 'Foi um prazer ajudar, até mais :)',
+    noRoute: 'Seu *AGER* ainda não possui rotas cadastradas, e com isso não possui relatórios de trabalho.',
+    noWork: route => `Ainda não foi feito nenhum percurso na rota ${route.name}.`,
   },
 };
