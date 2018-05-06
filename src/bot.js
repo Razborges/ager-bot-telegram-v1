@@ -13,7 +13,7 @@ const { commandTemperatura } = require('./components/temperatura');
 const { commandHumidade } = require('./components/humidade');
 
 const botgram = require('botgram');
-const regex = require('./api/regex');
+const { regex } = require('./api/regex');
 
 module.exports = (token) => {
   const bot = botgram(token);
