@@ -36,7 +36,7 @@ module.exports = (token) => {
 
     const name = `${msg.from.firstname} ${msg.from.lastname}`;
     const service = 'telegram';
-    const serviceId = msg.from.id;
+    const serviceId = `${msg.from.id}`;
 
     // REGISTRANDO UM AGER
     if (text === 'registrar um ager') {
