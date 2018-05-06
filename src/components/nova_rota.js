@@ -13,7 +13,7 @@ exports.commandNovaRota = async (msg, reply) => {
   } else {
     reply.keyboard().markdown(Messages.nova_rota.lesson(nameUser));
     reply.markdown(Messages.nova_rota.example);
-    reply.keyboard(Menus.complete).markdown(Messages.nova_rota.go);
+    reply.markdown(Messages.nova_rota.go);
 
     msg.context.nova_rota = true;
   }

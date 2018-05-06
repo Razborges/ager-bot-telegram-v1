@@ -129,10 +129,8 @@ module.exports = (token) => {
       }
 
       routes.data.routes.map(route => (
-        reply.markdown(Messages.rotas.infoRoute(route))
+        reply.keyboard(Menus.complete).markdown(Messages.rotas.infoRoute(route))
       ));
-
-      reply.keyboard(Menus.complete);
     }
 
     // INFORMAÇÕES SOBRE TEMPERATURA
