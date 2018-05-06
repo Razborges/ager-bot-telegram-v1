@@ -13,13 +13,13 @@ const { commandTemperatura } = require('./components/temperatura');
 const { commandHumidade } = require('./components/humidade');
 
 const botgram = require('botgram');
-const { regex } = require('./api/regex');
 
 module.exports = (token) => {
   const bot = botgram(token);
   bot.context({
     register: false, email: false, numberSeries: false, nova_rota: false,
   });
+  const regex = new RegExp('[a-z]{5}[0-9]{3}$');
   let numberSeries = '';
   let email = '';
 
@@ -48,6 +48,8 @@ module.exports = (token) => {
 
     if (text !== 'registrar um ager' && msg.context.register && msg.context.numberSeries) {
       numberSeries = text.toString().trim();
+
+      console.log('REGEX', regex);
 
       const numberLength = validator.isLength(numberSeries, { min: 8, max: 8 });
       const numberValid = regex.test(numberSeries);
