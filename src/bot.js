@@ -99,7 +99,7 @@ module.exports = (token) => {
 
       let [nameRoute, type, start] = msg.text.split('-');
 
-      nameRoute = name.trim();
+      nameRoute = nameRoute.trim();
       type = type.trim();
       let route = '';
 
