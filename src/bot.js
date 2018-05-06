@@ -1,4 +1,5 @@
 require('dotenv').config();
+const validator = require('validator');
 const Api = require('./api');
 const User = require('./models/User');
 const Route = require('./models/Route');
@@ -12,6 +13,7 @@ const { commandTemperatura } = require('./components/temperatura');
 const { commandHumidade } = require('./components/humidade');
 
 const botgram = require('botgram');
+const regex = require('../src/api/regex');
 
 module.exports = (token) => {
   const bot = botgram(token);
@@ -46,32 +48,50 @@ module.exports = (token) => {
 
     if (text !== 'registrar um ager' && msg.context.register && msg.context.numberSeries) {
       numberSeries = text.toString().trim();
-      reply.keyboard().markdown(Messages.register.digitEmail);
-      msg.context.numberSeries = false;
-      msg.context.email = true;
+
+      const numberLength = validator.isLength(numberSeries, { min: 8, max: 8 });
+      const numberValid = regex.test(numberSeries);
+
+      if (numberValid && numberLength) {
+        reply.keyboard().markdown(Messages.register.digitEmail);
+        msg.context.numberSeries = false;
+        msg.context.email = true;
+      } else {
+        reply.keyboard(Menus.init).markdown(Messages.resgister.errorNumberSeries);
+        msg.context.register = false;
+        msg.context.numberSeries = false;
+      }
     }
 
     if (text !== numberSeries && msg.context.register && msg.context.email) {
       email = text.toString().trim();
 
-      msg.context.register = false;
-      msg.context.email = false;
+      const emailValid = validator.isEmail(email);
 
-      if (numberSeries && email) {
-        const user = new User(name, email, service, serviceId);
-        const result = await Api.addUser(numberSeries, user);
-
-        if (!result.error) {
-          reply.markdown(Messages.register.success);
-          reply.keyboard(Menus.newRoute).markdown(Messages.register.newRoute);
-        }
-
-        if (result.error) {
-          reply.markdown(Messages.register.errorNumberSeries);
-          reply.keyboard(Menus.init).markdown(Messages.register.errorMenu);
-        }
-      } else {
+      if (!emailValid) {
         reply.keyboard(Menus.init).markdown(Messages.register.errorEmail);
+        msg.context.register = false;
+        msg.context.email = false;
+      } else {
+        msg.context.register = false;
+        msg.context.email = false;
+
+        if (numberSeries && email) {
+          const user = new User(name, email, service, serviceId);
+          const result = await Api.addUser(numberSeries, user);
+
+          if (!result.error) {
+            reply.markdown(Messages.register.success);
+            reply.keyboard(Menus.newRoute).markdown(Messages.register.newRoute);
+          }
+
+          if (result.error) {
+            reply.markdown(Messages.register.errorNumberSeries);
+            reply.keyboard(Menus.init).markdown(Messages.register.errorMenu);
+          }
+        } else {
+          reply.keyboard(Menus.init).markdown(Messages.register.errorEmail);
+        }
       }
     }
 
