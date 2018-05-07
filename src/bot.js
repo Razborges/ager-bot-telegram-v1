@@ -11,6 +11,7 @@ const { commandMenu } = require('./components/menu_command');
 const { commandBateria } = require('./components/bateria');
 const { commandTemperatura } = require('./components/temperatura');
 const { commandHumidade } = require('./components/humidade');
+const { commandAjuda } = require('./components/ajuda');
 
 const botgram = require('botgram');
 
@@ -29,6 +30,7 @@ module.exports = (token) => {
   bot.command('bateria', commandBateria);
   bot.command('temperatura', commandTemperatura);
   bot.command('humidade', commandHumidade);
+  bot.command('ajuda', commandAjuda);
 
   // VERIFICANDO RETORNO DAS MENSAGENS DO USUÁRIO
   bot.message(async (msg, reply) => {
@@ -37,6 +39,8 @@ module.exports = (token) => {
     const name = `${msg.from.firstname} ${msg.from.lastname}`;
     const service = 'telegram';
     const serviceId = `${msg.from.id}`;
+
+    // console.log(msg);
 
     // REGISTRANDO UM AGER
     if (text === 'registrar um ager') {
@@ -79,6 +83,7 @@ module.exports = (token) => {
           const result = await Api.addUser(numberSeries, user);
 
           if (!result.error) {
+            reply.sticker(Messages.default.successSticker);
             reply.markdown(Messages.register.success);
             reply.keyboard(Menus.newRoute).markdown(Messages.register.newRoute);
           }
@@ -115,6 +120,7 @@ module.exports = (token) => {
 
       if (!result.error) {
         msg.context.nova_rota = false;
+        reply.sticker(Messages.default.successSticker);
         reply.keyboard(Menus.complete).markdown(Messages.nova_rota.success);
       }
 

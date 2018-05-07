@@ -43,10 +43,17 @@ module.exports = {
   humidade: {
     humidity: (route, humidity, date) => `Rota ${route.name}: ${humidity}% - _${date}_`,
   },
+  help: {
+    help1: name => `${name} o *AgerBot* utiliza alguns comandos especiais programados, que ao serem digitados eu irei largar tudo para lhe obedecer.`,
+    help2: 'Você poderá ver uma lista a qualquer momento digitando / e aguarde (não envie a mensagem). O Telegram irá lhe mostrar a listagem e uma pequena orientação sobre cada comando.',
+    help3: 'Nem todos os comandos irão lhe oferecer a informação que precisa, apenas se você já tiver um *AGER* já registrado.',
+    helpMenu: 'Agora vamos continuar com menu principal, escolha uma das opções:',
+  },
   default: {
     ager: 'CRIAR MENSAGEM',
     xau: 'Foi um prazer ajudar, até mais :)',
     noRoute: 'Seu *AGER* ainda não possui rotas cadastradas, e com isso não possui relatórios de trabalho.',
     noWork: route => `Ainda não foi feito nenhum percurso na rota ${route.name}.`,
+    successSticker: 'CAADBAADZAIAAqqZQgFN40gGeHtKHAI',
   },
 };

@@ -1,5 +1,6 @@
 const Api = require('../api');
 const Messages = require('./messages');
+const { commandStart } = require('./start');
 const Menus = require('./menus');
 const moment = require('moment');
 
@@ -9,7 +10,9 @@ exports.commandHumidade = async (msg, reply) => {
   const routes = await Api.getRoute(numberSeries);
   const count = routes.data.routes.length;
 
-  if (count === 0) {
+  if (!user.data.result) {
+    commandStart(msg, reply);
+  } else if (count === 0) {
     reply.keyboard(Menus.complete).markdown(Messages.default.noRoute);
   } else {
     routes.data.routes.map(async (route) => {
