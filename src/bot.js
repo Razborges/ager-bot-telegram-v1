@@ -10,7 +10,7 @@ const { commandNovaRota } = require('./components/nova_rota');
 const { commandMenu } = require('./components/menu_command');
 const { commandBateria } = require('./components/bateria');
 const { commandUltimosDados } = require('./components/ultimos_dados');
-const { commandHistoricoDados } = require('./components/historico_dados');
+const { commandHistoricoDados } = require('./components/historico');
 const { commandAjuda } = require('./components/ajuda');
 
 const botgram = require('botgram');
@@ -29,7 +29,7 @@ module.exports = (token) => {
   bot.command('nova_rota', commandNovaRota);
   bot.command('bateria', commandBateria);
   bot.command('ultimos_dados', commandUltimosDados);
-  bot.command('historico_dados', commandHistoricoDados);
+  bot.command('historico', commandHistoricoDados);
   bot.command('ajuda', commandAjuda);
 
   // VERIFICANDO RETORNO DAS MENSAGENS DO USUÁRIO
