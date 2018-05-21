@@ -37,11 +37,11 @@ module.exports = {
     level: level => `Bateria com ${level}% de carga.`,
     noLevel: 'Seu *AGER* está *sem bateria*!',
   },
-  temperatura: {
-    temperature: (route, temperature, date) => `Rota ${route.name}: ${temperature}°C - _${date}_`,
+  ultimos_dados: {
+    dataInfo: (route, temperature, humidity, date) => `Rota ${route.name}: ${temperature}°C e ${humidity}% de humidade do ar - _${date}_`,
   },
-  humidade: {
-    humidity: (route, humidity, date) => `Rota ${route.name}: ${humidity}% - _${date}_`,
+  historico_dados: {
+    default: 'Necessário implementar',
   },
   help: {
     help1: name => `${name} o *AgerBot* utiliza alguns comandos especiais programados, que ao serem digitados eu irei largar tudo para lhe obedecer.`,
@@ -52,6 +52,7 @@ module.exports = {
   default: {
     ager: 'CRIAR MENSAGEM',
     xau: 'Foi um prazer ajudar, até mais :)',
+    hello: username => `Olá ${username}! Espero que esteja tudo bem.`,
     noRoute: 'Seu *AGER* ainda não possui rotas cadastradas, e com isso não possui relatórios de trabalho.',
     noWork: route => `Ainda não foi feito nenhum percurso na rota ${route.name}.`,
     successSticker: 'CAADBAADZAIAAqqZQgFN40gGeHtKHAI',

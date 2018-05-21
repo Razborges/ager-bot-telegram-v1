@@ -9,8 +9,8 @@ const { commandStart } = require('./components/start');
 const { commandNovaRota } = require('./components/nova_rota');
 const { commandMenu } = require('./components/menu_command');
 const { commandBateria } = require('./components/bateria');
-const { commandTemperatura } = require('./components/temperatura');
-const { commandHumidade } = require('./components/humidade');
+const { commandUltimosDados } = require('./components/ultimos_dados');
+const { commandHistoricoDados } = require('./components/historico_dados');
 const { commandAjuda } = require('./components/ajuda');
 
 const botgram = require('botgram');
@@ -28,8 +28,8 @@ module.exports = (token) => {
   bot.command('menu', commandMenu);
   bot.command('nova_rota', commandNovaRota);
   bot.command('bateria', commandBateria);
-  bot.command('temperatura', commandTemperatura);
-  bot.command('humidade', commandHumidade);
+  bot.command('ultimos_dados', commandUltimosDados);
+  bot.command('historico_dados', commandHistoricoDados);
   bot.command('ajuda', commandAjuda);
 
   // VERIFICANDO RETORNO DAS MENSAGENS DO USUÁRIO
@@ -158,13 +158,13 @@ module.exports = (token) => {
     }
 
     // INFORMAÇÕES SOBRE TEMPERATURA
-    if (text === 'verificar temperaturas') {
-      commandTemperatura(msg, reply);
+    if (text === 'últimos dados') {
+      commandUltimosDados(msg, reply);
     }
 
     // INFORMAÇÕES SOBRE HUMIDADE
-    if (text === 'verificar humidade') {
-      commandHumidade(msg, reply);
+    if (text === 'histórico de dados') {
+      commandHistoricoDados(msg, reply);
     }
 
     // CONSULTAR NÍVEL DA BATERIA
@@ -176,6 +176,12 @@ module.exports = (token) => {
     // DESPEDIDA
     if (text === 'xau' || text === 'adeus' || text === 'fui' || text === 'quit') {
       reply.keyboard().markdown(Messages.default.xau);
+    }
+
+    // SAUDAÇÃO
+    if (text === 'oi' || text === 'olá' || text === 'hello' || text === 'e aí') {
+      const userName = `@${msg.from.username}`;
+      reply.keyboard(Menus.complete).markdown(Messages.default.hello(userName));
     }
   });
 

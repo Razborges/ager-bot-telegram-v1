@@ -2,9 +2,9 @@ const Api = require('../api');
 const Messages = require('./messages');
 const { commandStart } = require('./start');
 const Menus = require('./menus');
-const moment = require('moment');
+// const moment = require('moment');
 
-exports.commandHumidade = async (msg, reply) => {
+exports.commandHistoricoDados = async (msg, reply) => {
   const user = await Api.getUser(msg.from.id);
   const { numberSeries } = user.data.result.robot;
   const routes = await Api.getRoute(numberSeries);
@@ -21,10 +21,10 @@ exports.commandHumidade = async (msg, reply) => {
       if (work.data.works.length === 0) {
         reply.keyboard(Menus.complete).markdown(Messages.default.noWork(route));
       } else {
-        const { humidity, endWork } = work.data.works[0];
-        const date = moment(endWork).format('DD/MM/YYYY');
+        // const { humidity, endWork } = work.data.works[0];
+        // const date = moment(endWork).format('DD/MM/YYYY');
 
-        reply.keyboard(Menus.complete).markdown(Messages.humidade.humidity(route, humidity, date));
+        reply.keyboard(Menus.complete).markdown(Messages.historico_dados.default);
       }
     });
   }
