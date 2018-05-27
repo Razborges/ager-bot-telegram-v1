@@ -14,14 +14,14 @@ exports.commandBateria = async (msg, reply) => {
     const battery = await Api.getBattery(numberSeries);
 
     if (battery.data.battery.length === 0) {
-      reply.markdown(Messages.bateria.noLevel);
+      reply.action('typing').markdown(Messages.bateria.noLevel);
     } else {
       const { level } = battery.data.battery[0];
 
       if (name) {
-        reply.markdown(Messages.bateria.levelWithName(level, name));
+        reply.action('typing').markdown(Messages.bateria.levelWithName(level, name));
       } else {
-        reply.markdown(Messages.bateria.level(name));
+        reply.action('typing').markdown(Messages.bateria.level(name));
       }
     }
   }

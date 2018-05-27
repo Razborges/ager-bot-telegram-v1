@@ -43,7 +43,7 @@ module.exports = (token) => {
 
     // REGISTRANDO UM AGER
     if (text === 'registrar um ager') {
-      reply.keyboard().markdown(Messages.register.digitNumber);
+      reply.action('typing').keyboard().markdown(Messages.register.digitNumber);
       msg.context.register = true;
       msg.context.numberSeries = true;
     }
@@ -54,7 +54,7 @@ module.exports = (token) => {
       const numberLength = validator.isLength(numberSeries, { min: 8, max: 8 });
 
       if (numberLength) {
-        reply.keyboard().markdown(Messages.register.digitEmail);
+        reply.action('typing').keyboard().markdown(Messages.register.digitEmail);
         msg.context.numberSeries = false;
         msg.context.email = true;
       } else {
@@ -70,7 +70,7 @@ module.exports = (token) => {
       const emailValid = validator.isEmail(email);
 
       if (!emailValid) {
-        reply.keyboard(Menus.init).markdown(Messages.register.errorEmail);
+        reply.action('typing').keyboard(Menus.init).markdown(Messages.register.errorEmail);
         msg.context.register = false;
         msg.context.email = false;
       } else {
@@ -83,16 +83,16 @@ module.exports = (token) => {
 
           if (!result.error) {
             reply.sticker(Messages.default.successSticker);
-            reply.markdown(Messages.register.success);
-            reply.keyboard(Menus.newRoute).markdown(Messages.register.newRoute);
+            reply.action('typing').markdown(Messages.register.success);
+            reply.action('typing').keyboard(Menus.newRoute).markdown(Messages.register.newRoute);
           }
 
           if (result.error) {
-            reply.markdown(Messages.register.errorNumberSeries);
-            reply.keyboard(Menus.init).markdown(Messages.register.errorMenu);
+            reply.action('typing').markdown(Messages.register.errorNumberSeries);
+            reply.action('typing').keyboard(Menus.init).markdown(Messages.register.errorMenu);
           }
         } else {
-          reply.keyboard(Menus.init).markdown(Messages.register.errorEmail);
+          reply.action('typing').keyboard(Menus.init).markdown(Messages.register.errorEmail);
         }
       }
     }
@@ -119,21 +119,21 @@ module.exports = (token) => {
 
       if (!result.error) {
         msg.context.nova_rota = false;
-        reply.sticker(Messages.default.successSticker);
-        reply.keyboard(Menus.complete).markdown(Messages.nova_rota.success);
+        reply.action('typing').sticker(Messages.default.successSticker);
+        reply.action('typing').keyboard(Menus.complete).markdown(Messages.nova_rota.success);
       }
 
       if (result.error) {
         msg.context.nova_rota = false;
-        reply.markdown(Messages.nova_rota.error);
-        reply.keyboard(Menus.newRoute).markdown(Messages.nova_rota.again);
+        reply.action('typing').markdown(Messages.nova_rota.error);
+        reply.action('typing').keyboard(Menus.newRoute).markdown(Messages.nova_rota.again);
       }
     }
 
     // INFORMAÇÕES SOBRE O AGER
     if (text === 'saber mais sobre o ager') {
-      reply.keyboard().markdown(Messages.default.ager);
-      reply.keyboard(Menus.init).markdown(Messages.start.initOptions);
+      reply.action('typing').keyboard().markdown(Messages.default.ager);
+      reply.action('typing').keyboard(Menus.init).markdown(Messages.start.initOptions);
     }
 
     // LISTAGEM DE ROTAS
@@ -144,15 +144,15 @@ module.exports = (token) => {
       const count = routes.data.routes.length;
 
       if (count === 0) {
-        reply.keyboard(Menus.complete).markdown(Messages.rotas.noRoutes);
+        reply.action('typing').keyboard(Menus.complete).markdown(Messages.rotas.noRoutes);
       } else if (count > 1) {
-        reply.keyboard().markdown(Messages.rotas.moreRoutes(count));
+        reply.action('typing').keyboard().markdown(Messages.rotas.moreRoutes(count));
       } else {
-        reply.keyboard().markdown(Messages.rotas.oneRoute(count));
+        reply.action('typing').keyboard().markdown(Messages.rotas.oneRoute(count));
       }
 
       routes.data.routes.map(route => (
-        reply.keyboard(Menus.complete).markdown(Messages.rotas.infoRoute(route))
+        reply.action('typing').keyboard(Menus.complete).markdown(Messages.rotas.infoRoute(route))
       ));
     }
 
@@ -174,13 +174,13 @@ module.exports = (token) => {
 
     // DESPEDIDA
     if (text === 'xau' || text === 'adeus' || text === 'fui' || text === 'quit') {
-      reply.keyboard().markdown(Messages.default.xau);
+      reply.action('typing').keyboard().markdown(Messages.default.xau);
     }
 
     // SAUDAÇÃO
     if (text === 'oi' || text === 'olá' || text === 'hello' || text === 'e aí') {
-      const userName = `@${msg.from.username}`;
-      reply.keyboard(Menus.complete).markdown(Messages.default.hello(userName));
+      const firstName = `@${msg.from.firstname}`;
+      reply.action('typing').keyboard(Menus.complete).markdown(Messages.default.hello(firstName));
     }
   });
 

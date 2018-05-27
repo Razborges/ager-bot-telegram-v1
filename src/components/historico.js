@@ -19,9 +19,9 @@ exports.commandHistoricoDados = async (msg, reply) => {
   if (!user.data.result) {
     commandStart(msg, reply);
   } else if (count === 0) {
-    reply.keyboard(Menus.complete).markdown(Messages.default.noRoute);
+    reply.action('typing').keyboard(Menus.complete).markdown(Messages.default.noRoute);
   } else {
-    reply.keyboard(Menus.complete).markdown(Messages.historico.default);
+    reply.action('typing').keyboard(Menus.complete).markdown(Messages.historico.default);
     const data = [];
     routes.data.routes.map(async (route) => {
       const work = await Api.getWork(route.id);
@@ -43,9 +43,9 @@ exports.commandHistoricoDados = async (msg, reply) => {
 
       fs.writeFile(`./files/${user.data.result.id}.csv`, csv, (err) => {
         if (err) {
-          reply.keyboard(Menus.complete).markdown(Messages.historico.errorFile);
+          reply.action('typing').keyboard(Menus.complete).markdown(Messages.historico.errorFile);
         }
-        reply.keyboard(Menus.complete).markdown(Messages.historico.send).document(path.join(`${__dirname}../../../files/${user.data.result.id}.csv`));
+        reply.action('typing').keyboard(Menus.complete).markdown(Messages.historico.send).document(path.join(`${__dirname}../../../files/${user.data.result.id}.csv`));
       });
     });
   }
