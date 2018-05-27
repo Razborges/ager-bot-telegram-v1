@@ -23,5 +23,5 @@ app.use('/files', router.get('/:name', (req, res) => {
 
 app.listen(port, () => {
   console.log(`Server running in port ${port}`);
-  console.log(`Access http://localhost:${port}`);
+  // console.log(`Access http://localhost:${port}`);
 });

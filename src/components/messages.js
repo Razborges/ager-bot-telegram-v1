@@ -58,5 +58,6 @@ module.exports = {
     noRoute: 'Seu *AGER* ainda não possui rotas cadastradas, e com isso não possui relatórios de trabalho.',
     noWork: route => `Ainda não foi feito nenhum percurso na rota ${route.name}.`,
     successSticker: 'CAADBAADZAIAAqqZQgFN40gGeHtKHAI',
+    file: 'Eu sou um robô mas não sou inteligente assim, eu não consigo ver ou ouvir nenhum tipo de arquivo.',
   },
 };

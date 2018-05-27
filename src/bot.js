@@ -39,7 +39,10 @@ module.exports = (token) => {
     const service = 'telegram';
     const serviceId = `${msg.from.id}`;
 
-    // console.log(msg);
+    if (msg.type !== 'text') {
+      reply.action('typing').markdown(Messages.default.file);
+      commandMenu(msg, reply);
+    }
 
     // REGISTRANDO UM AGER
     if (text === 'registrar um ager') {
