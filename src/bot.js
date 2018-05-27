@@ -1,4 +1,3 @@
-require('dotenv').config();
 const validator = require('validator');
 const Api = require('./api');
 const User = require('./models/User');

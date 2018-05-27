@@ -1,31 +1,51 @@
+require('dotenv').config();
 const Api = require('../api');
 const Messages = require('./messages');
 const { commandStart } = require('./start');
 const Menus = require('./menus');
-// const moment = require('moment');
+const moment = require('moment');
+const Json2csvParser = require('json2csv').Parser;
+const fs = require('fs');
 
 exports.commandHistoricoDados = async (msg, reply) => {
   const user = await Api.getUser(msg.from.id);
   const { numberSeries } = user.data.result.robot;
   const routes = await Api.getRoute(numberSeries);
   const count = routes.data.routes.length;
+  const fields = ['rota', 'data', 'temperatura', 'humidade do ar'];
+  const json2csvParser = new Json2csvParser({ fields });
 
   if (!user.data.result) {
     commandStart(msg, reply);
   } else if (count === 0) {
     reply.keyboard(Menus.complete).markdown(Messages.default.noRoute);
   } else {
+    reply.keyboard(Menus.complete).markdown(Messages.historico.default);
+    const data = [];
     routes.data.routes.map(async (route) => {
       const work = await Api.getWork(route.id);
 
-      if (work.data.works.length === 0) {
-        reply.keyboard(Menus.complete).markdown(Messages.default.noWork(route));
-      } else {
-        // const { humidity, endWork } = work.data.works[0];
-        // const date = moment(endWork).format('DD/MM/YYYY');
+      await work.data.works.map((w) => {
+        const { temperature, humidity, endWork } = w;
+        const date = moment(endWork).format('DD/MM/YYYY');
 
-        reply.keyboard(Menus.complete).markdown(Messages.historico_dados.default);
-      }
+        const info = {
+          rota: route.name,
+          data: date,
+          temperatura: temperature,
+          'humidade do ar': humidity,
+        };
+        return data.push(info);
+      });
+
+      const csv = json2csvParser.parse(data);
+
+      fs.writeFile(`./files/${user.data.result.id}.csv`, csv, (err) => {
+        if (err) {
+          reply.keyboard(Menus.complete).markdown(Messages.historico.errorFile);
+        }
+        reply.keyboard(Menus.complete).markdown(Messages.historico.send).document(`${process.env.URL_OPEN_SHIFT}/files/${user.data.result.id}.csv`);
+      });
     });
   }
 };

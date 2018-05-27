@@ -40,8 +40,10 @@ module.exports = {
   ultimos_dados: {
     dataInfo: (route, temperature, humidity, date) => `Rota ${route.name}: ${temperature}°C e ${humidity}% de humidade do ar - _${date}_`,
   },
-  historico_dados: {
-    default: 'Necessário implementar',
+  historico: {
+    default: 'Estou processando o seu relatório.',
+    send: 'Pronto! Segue seu histórico:',
+    errorFile: 'Ocorreu um erro ao gerar o arquivo, vamos tentar novamente?',
   },
   help: {
     help1: name => `${name} o *AgerBot* utiliza alguns comandos especiais programados, que ao serem digitados eu irei largar tudo para lhe obedecer.`,
