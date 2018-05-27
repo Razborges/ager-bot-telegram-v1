@@ -6,7 +6,6 @@ const Menus = require('./menus');
 const moment = require('moment');
 const Json2csvParser = require('json2csv').Parser;
 const fs = require('fs');
-const path = require('path');
 
 exports.commandHistoricoDados = async (msg, reply) => {
   const user = await Api.getUser(msg.from.id);
@@ -45,8 +44,9 @@ exports.commandHistoricoDados = async (msg, reply) => {
         if (err) {
           reply.action('typing').keyboard(Menus.complete).markdown(Messages.historico.errorFile);
         }
-        reply.action('typing').keyboard(Menus.complete).markdown(Messages.historico.send).document(path.join(`${__dirname}../../../files/${user.data.result.id}.csv`));
       });
     });
+    reply.action('typing').keyboard(Menus.complete).markdown(Messages.historico.send);
+    reply.action('typing').keyboard(Menus.complete).markdown(`${process.env.URL_OPEN_SHIFT}/files/${user.data.result.id}.csv`);
   }
 };
