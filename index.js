@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// app.use('/files', express.static('files'));
+app.use(express.static('./src/static'));
 
 const port = process.env.PORT;
 const token = process.env.TELEGRAM_TOKEN;
@@ -20,6 +20,11 @@ app.use('/files', router.get('/:name', (req, res) => {
   const filename = req.params.name;
   res.download(`${__dirname}/files/${filename}`);
 }));
+
+app.use('/', (req, res, next) => {
+  res.sendFile(`${__dirname}/index.html`);
+  next();
+});
 
 app.listen(port, () => {
   console.log(`Server running in port ${port}`);
