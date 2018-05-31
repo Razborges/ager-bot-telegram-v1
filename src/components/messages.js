@@ -30,7 +30,7 @@ module.exports = {
     infoRoute: route => `Rota ${route.name} com plantio de ${route.type}`,
   },
   menu_command: {
-    menu: name => `${name}, abaixo o menu principal, e a qualquer momento comece digitando / para visualizar a lista com os comandos especiais.`,
+    menu: name => `${name}, abaixo está o menu principal. A qualquer momento comece digitando / para visualizar a lista com os comandos especiais.`,
   },
   bateria: {
     levelWithName: (level, name) => `O *AGER* _${name}_ está com ${level}% de bateria.`,
@@ -58,6 +58,7 @@ module.exports = {
     noRoute: 'Seu *AGER* ainda não possui rotas cadastradas, e com isso não possui relatórios de trabalho.',
     noWork: route => `Ainda não foi feito nenhum percurso na rota ${route.name}.`,
     successSticker: 'CAADBAADZAIAAqqZQgFN40gGeHtKHAI',
-    file: 'Eu sou um robô mas não sou inteligente assim, eu não consigo ver ou ouvir nenhum tipo de arquivo.',
+    file: 'Eu sou um robô mas não sou tão inteligente assim! Eu não consigo ver ou ouvir nenhum tipo de arquivo.',
+    hummSticker: 'CAADAgADzwUAAmMr4gmeXsfnL_icMwI',
   },
 };
