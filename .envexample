@@ -1,11 +1,4 @@
 TELEGRAM_TOKEN=
-
 API_URLBASE=
-
-URL=
 URL_OPEN_SHIFT=
 PORT=
-HOST=
-
-DEV=
-NTBA_FIX_319='qualquer valor'
